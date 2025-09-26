@@ -7,3 +7,18 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+require "faker"
+if Rails.env.development?
+  Product.destroy_all
+  20.times do
+    Product.create!(
+      name: Faker::Commerce.product_name,
+      code: "#{Faker::Alphanumeric.alpha(number: 4).upcase}#{Faker::Number.number(digits: 4)}",
+      price: Faker::Commerce.price(range: 0..100.0),
+      inventory: rand(0..50)
+    )
+  end
+else
+  puts "Seeding skipped. Not in development environment."
+end
